@@ -1,5 +1,10 @@
 import socket
-import struct
+import TelemetryData
+import Convert
+
+def check_package_type(package) {
+    return (struct.unpack('B', package[2:3])[0] & 0x3)
+}
 
 UDP_IP = "0.0.0.0"
 UDP_PORT = 5606
@@ -9,17 +14,15 @@ sock.bind((UDP_IP, UDP_PORT))
 
 while True:
     data, addr = sock.recvfrom(1024 * 2) # buffer size is 1024 bytes
-    #print ("Data:", data[0:18])
-    version = struct.unpack('H', data[0:2])[0]
-    print ("Build Version:", version)
-    package = struct.unpack('B', data[2:3])[0]
-    print ("Package Type:", (package & 0x3))
-    print ("Sequence Number:", (package & 0xFC) << 2)
-    g_state = struct.unpack('B', data[3:4])[0]
-    print ("g_state:", g_state)
-    n_part = struct.unpack('b', data[5:6])[0]
-    print ("n_part:", n_part)
-    speed = struct.unpack('f', data[120:124])[0]
-    print ("speed:", speed)
-    rpm = struct.unpack('H', data[124:126])[0]
-    print ("rpm:", rpm)
+    package_type = check_package_type(data)
+    if (package_type == 0):
+        telemetry_data = TelemetryData.TelemetryData(data)
+    elif (package_type == 1):
+        pass
+    elif (package_type == 2):
+        pass 
+    print ("Build Version:", telemetry_data.build_version)
+    print ("Package Type:", telemetry_data.package_type)
+    print ("Sequence Number:", telemetry_data.sequence_number)
+    print ("speed:", Convert.speed_to_kph(telemetry_data.speed))
+    print ("rpm:", telemetry_data.rpm)
