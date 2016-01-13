@@ -2,7 +2,6 @@ import struct
 import ParticipantInfo
 
 #Model class for Telemetry Packages
-#Still a lot of data to read
 class TelemetryData:
     def __init__(self, package):
         self.build_version = struct.unpack('H', package[0:2])[0]
