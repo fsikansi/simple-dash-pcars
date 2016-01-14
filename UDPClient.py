@@ -1,4 +1,5 @@
 import socket
+import threading
 
 class UDPClient:
 
@@ -12,6 +13,8 @@ class UDPClient:
     def connect(self):
         try:
             self.client.bind((self.IPAddress, self.port))
+            t = threading.Thread(target=self.listen)
+            t.start()
         except:
             print("Error connecting to stream!")
 
