@@ -22,9 +22,22 @@ class ViewController:
             self.serial.write(tlv.serialize())
         elif (self.view_type == ViewTypes.CONSOLE):
             os.system('cls' if os.name=='nt' else 'clear')
-            print ("Build Version:", telemetry_data.build_version)
-            print ("Package Type:", telemetry_data.package_type)
-            print ("Sequence Number:", telemetry_data.sequence_number)
-            print ("speed:", Convert.speed_to_kph(telemetry_data.speed))
-            print ("RPM:", telemetry_data.rpm)
-            print ("Gear:", telemetry_data.current_gear)
+            print("------------------------------")
+            print("-------------RPM--------------")
+            print("            " + str(telemetry_data.rpm))
+            aux = int((telemetry_data.rpm / telemetry_data.max_rpm) * 10)
+            string_rpm = "----["
+            for i in range(0,aux):
+                string_rpm += '**'
+            for i in range(aux, 10):
+                string_rpm += '  '
+            string_rpm += "]----"
+            print(string_rpm)
+            print("------------SPEED-------------")
+            print("           " + str(int(Convert.speed_to_kph(telemetry_data.speed))) + " KPH")
+            print("------------GEAR-------------")
+            print("            " + str(telemetry_data.current_gear))
+            print("------------------------------")
+            #print ("Build Version:", telemetry_data.build_version)
+            #print ("Package Type:", telemetry_data.package_type)
+            #print ("Sequence Number:", telemetry_data.sequence_number)
