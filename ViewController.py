@@ -17,9 +17,12 @@ class ViewController:
 
     def update_telemetry(self, telemetry_data):
         if (self.view_type == ViewTypes.ARDUINO):
-            tlv = ArduinoHelper.create_tlv(telemetry_data)
+            #tlv = ArduinoHelper.create_tlv(telemetry_data)
+            tlv_lcd = ArduinoHelper.create_lcd_tlv(telemetry_data)
+            tlv_led = ArduinoHelper.create_led_tlv(telemetry_data)
             #print("".join("%02x" % b for b in tlv.serialize()))
-            self.serial.write(tlv.serialize())
+            self.serial.write(tlv_lcd.serialize())
+            self.serial.write(tlv_led.serialize())
         elif (self.view_type == ViewTypes.CONSOLE):
             os.system('cls' if os.name=='nt' else 'clear')
             print("------------------------------")

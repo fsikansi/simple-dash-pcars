@@ -7,8 +7,8 @@ import time
 def check_package_type(package):
     return (struct.unpack('B', package[2:3])[0] & 0x3)
 
-view_controller = ViewController(ViewTypes.CONSOLE)
-#view_controller = ViewController(ViewTypes.ARDUINO)
+#view_controller = ViewController(ViewTypes.CONSOLE)
+view_controller = ViewController(ViewTypes.ARDUINO)
 
 with open("history.dat", "rb") as input:
     history = pickle.load(input)
