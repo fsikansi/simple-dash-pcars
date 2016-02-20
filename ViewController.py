@@ -3,23 +3,33 @@ import os
 import Convert
 import ArduinoHelper
 import SerialController
+import GPIOController
 
 class ViewTypes(Enum):
     ARDUINO = 0
     CONSOLE = 1
+    GPIO = 2
 
 class ViewController:
     def __init__(self, type):
         self.view_type = type
         self.serial = None
+        self.gpio = None
         if (type == ViewTypes.ARDUINO):
             self.serial = SerialController.SerialController()
+        elif (type == ViewTypes.GPIO):
+            self.gpio = GPIOController.GPIOController()
 
     def update_telemetry(self, telemetry_data):
         if (self.view_type == ViewTypes.ARDUINO):
             tlv = ArduinoHelper.create_tlv(telemetry_data)
             #print("".join("%02x" % b for b in tlv.serialize()))
             self.serial.write(tlv.serialize())
+        elif (self.view_type == ViewTypes.GPIO):
+            print("------------GEAR-------------")
+            print("            " + str(telemetry_data.current_gear))
+            print("------------------------------")
+            self.gpio.update_all(telemetry_data)
         elif (self.view_type == ViewTypes.CONSOLE):
             os.system('cls' if os.name=='nt' else 'clear')
             print("------------------------------")

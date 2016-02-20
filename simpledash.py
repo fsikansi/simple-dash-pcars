@@ -10,7 +10,7 @@ UDP_IP = "0.0.0.0"
 UDP_PORT = 5606
 running = True
 #view_controller = ViewController(ViewTypes.CONSOLE)
-view_controller = ViewController(ViewTypes.ARDUINO)
+view_controller = ViewController(ViewTypes.GPIO)
 
 def check_package_type(package):
     return (struct.unpack('B', package[2:3])[0] & 0x3)
